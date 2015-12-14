@@ -1,0 +1,11 @@
+name: Timberman
+description: Timberman
+main: net.samagames.timberman.Timberman
+version: 1.0
+author: Rigner
+depend: [SamaGamesAPI]
+
+commands:
+  game:
+    description:
+    usage:
