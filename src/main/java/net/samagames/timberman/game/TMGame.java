@@ -8,6 +8,7 @@ import net.samagames.api.games.Status;
 import net.samagames.timberman.Timberman;
 import net.samagames.timberman.util.ItemsUtil;
 import net.samagames.timberman.util.RulesUtil;
+import net.samagames.tools.Titles;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -100,7 +101,15 @@ public class TMGame extends Game<TMPlayer>
 	{
 		if (tmp == null || !tmp.isOnline())
 			return ;
-		plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + ChatColor.YELLOW + " " + tmp.getOfflinePlayer().getName() + ChatColor.WHITE + " a gagné !");
+		String name;
+		Player p = tmp.getPlayerIfOnline();
+		if (p == null)
+			name = tmp.getOfflinePlayer().getName();
+		else
+			name = p.getDisplayName();
+		plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + " " + name + ChatColor.WHITE + " a gagné !");
+		for (Player user : plugin.getServer().getOnlinePlayers())
+            Titles.sendTitle(user, 0, 60, 5, ChatColor.RED + "Fin du jeu", ChatColor.YELLOW + "Victoire de " + name);
 		coherenceMachine.getTemplateManager().getPlayerWinTemplate().execute(tmp.getPlayerIfOnline());
 		tmp.addCoins(30, "Victoire !");
 		tmp.addStars(1, "Victoire !");
@@ -111,7 +120,13 @@ public class TMGame extends Game<TMPlayer>
 	{
 		if (tmp == null || !tmp.isOnline())
 			return ;
-		plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + ChatColor.YELLOW + " " + tmp.getOfflinePlayer().getName() + ChatColor.WHITE + " est éliminé !");
+		String name;
+		Player p = tmp.getPlayerIfOnline();
+		if (p == null)
+			name = tmp.getOfflinePlayer().getName();
+		else
+			name = p.getDisplayName();
+		plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + " " + name + ChatColor.WHITE + " est éliminé !");
 		tmp.setSpectator();
 		List<TMPlayer> players = new ArrayList<TMPlayer>();
 		for (TMPlayer t : this.getInGamePlayers().values())
