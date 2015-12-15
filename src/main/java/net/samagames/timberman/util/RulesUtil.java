@@ -19,10 +19,20 @@ public class RulesUtil
 				"\n   ]--------------[" +
 				"\n" +
 				"\n" +
-				"\n §11.§0 Comment jouer ?",
+				"\n §11.§0 Objectif\n" +
+				"\n §12.§0 Comment jouer ?",
+				
+				"\n    §lObjectif§0\n" +
+				"\n Vous devez couper" +
+				"\n un arbre sans vous" +
+				"\n prendre de branche.",
 				
 				"\n §lComment jouer ?§0\n" +
-				"\n ",
+				" Utilisez la hache" +
+				"\n pour couper, et" +
+				"\n déplacez vous de" +
+				"\n droite à gauche" +
+				"\n pour esquiver.",
 				
 				"\n\nJeu développé par :" +
 				"\n\n - §lRigner§0" +

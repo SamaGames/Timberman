@@ -32,18 +32,20 @@ public class ScoreboardManager
 	{
 		if (!players.contains(tmp))
 			players.add(tmp);
+		update();
 	}
 	
 	public void removeReceiver(TMPlayer tmp)
 	{
 		if (players.contains(tmp))
 			players.remove(tmp);
+		update();
 	}
 	
 	public void update()
 	{
 		Scoreboard sc = plugin.getServer().getScoreboardManager().getNewScoreboard();
-		Objective obj = sc.registerNewObjective(ChatColor.GOLD + "~ Timberman ~", "dummy");
+		Objective obj = sc.registerNewObjective(ChatColor.GOLD + "= Timberman =", "dummy");
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		
 		int ingame = 0;
@@ -61,21 +63,21 @@ public class ScoreboardManager
 			{
 				if (tmp.isModerator())
 					continue ;
+				String name = ChatColor.stripColor(tmp.getOfflinePlayer().getName());
+				if (name.length() > 13)
+					name = name.substring(0, 13);
 				if (!tmp.isSpectator())
 				{
-					obj.getScore(tmp.getOfflinePlayer().getName()).setScore((int)(tmp.getProgression() * 100));
+					obj.getScore(ChatColor.WHITE + " " + name).setScore((int)(tmp.getProgression() * 100));
 					continue ;
 				}
-				String name = tmp.getOfflinePlayer().getName();
-				if (name.length() > 14)
-					name = ChatColor.RED + name.substring(0, 14);
-				obj.getScore(name).setScore(0);
+				obj.getScore(" " + ChatColor.RED + name).setScore(0);
 			}
 			obj.getScore(ChatColor.GRAY + "Progression (%):").setScore(101);
 		}
 		obj.getScore("   ").setScore(102);
 		obj.getScore(" " + ingame).setScore(103);
-		obj.getScore(ChatColor.GRAY + " Joueurs :").setScore(104);
+		obj.getScore(ChatColor.GRAY + "Joueurs :").setScore(104);
 		obj.getScore("    ").setScore(105);
 		for (TMPlayer tmp : players)
 			if (tmp.isOnline())

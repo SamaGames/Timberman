@@ -89,8 +89,10 @@ public class TMPlayer extends GamePlayer
 		this.stand_right.setGravity(false);
 		this.stand_right.setVisible(false);
 		this.stand_right.setRemoveWhenFarAway(false);
+		
+		moveLeft();
 
-		gameloc.add(0, -1, 0).getBlock().setMetadata("pos", new FixedMetadataValue(plugin, "Rigner is god"));
+		gameloc.clone().add(0, -1, 0).getBlock().setMetadata("pos", new FixedMetadataValue(plugin, "Rigner is god"));
 		
 		p.teleport(gameloc);
 		p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE, 128));
@@ -191,7 +193,6 @@ public class TMPlayer extends GamePlayer
 		}
 		
 		p.setExp((float)currentPosition / (float)toDown);
-		//TimberMan.getInstance().getScoreboardManager().setScore(player, TimberMan.getInstance().getScoreboardManager().getScore(player) + 1);
 		
 		if (currentPosition >= toDown) {
 			plugin.getGame().win(this);

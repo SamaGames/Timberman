@@ -47,6 +47,7 @@ public class Timberman extends JavaPlugin
 		scoremanager = new ScoreboardManager(this);
 		
 		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+		getServer().getScheduler().runTaskTimer(this, () -> scoremanager.update(), 10, 10);
 	}
 	
 	public Location getSpawn()
