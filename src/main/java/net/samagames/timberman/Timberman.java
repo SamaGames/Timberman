@@ -1,6 +1,7 @@
 package net.samagames.timberman;
 
 import net.samagames.api.SamaGamesAPI;
+import net.samagames.timberman.game.ScoreboardManager;
 import net.samagames.timberman.game.TMGame;
 import net.samagames.timberman.game.TreePattern;
 import net.samagames.timberman.listener.PlayerListener;
@@ -24,6 +25,7 @@ public class Timberman extends JavaPlugin
 	private SamaGamesAPI api;
 	private TMGame game;
 	private int treeshowheight;
+	private ScoreboardManager scoremanager;
 	
 	@Override
 	public void onEnable()
@@ -42,6 +44,7 @@ public class Timberman extends JavaPlugin
 		game = new TMGame(this);
 		api.getGameManager().registerGame(game);
 		api.getGameManager().setMaxReconnectTime(-1);
+		scoremanager = new ScoreboardManager(this);
 		
 		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 	}
@@ -78,5 +81,10 @@ public class Timberman extends JavaPlugin
 	public int getTreeShowHeight()
 	{
 		return treeshowheight;
+	}
+	
+	public ScoreboardManager getScoreManager()
+	{
+		return scoremanager;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.samagames.api.games.Game;
+import net.samagames.api.games.Status;
 import net.samagames.timberman.Timberman;
 import net.samagames.timberman.util.ItemsUtil;
 import net.samagames.timberman.util.RulesUtil;
@@ -37,6 +38,11 @@ public class TMGame extends Game<TMPlayer>
 		p.setHealth(20);
 		p.setLevel(0);
 		giveWaitingInventory(p);
+		plugin.getServer().getScheduler().runTask(plugin, () -> {
+			TMPlayer tmp = getPlayer(p.getUniqueId());
+			if (tmp != null)
+				plugin.getScoreManager().addReceiver(tmp);
+		});
 	}
 	
 	public void giveWaitingInventory(Player p)
@@ -77,6 +83,17 @@ public class TMGame extends Game<TMPlayer>
 			givePlayingInventory(p);
 			tmp.startGame(plugin, p);
 		}
+	}
+	
+	@Override
+	public void handleLogout(Player p)
+	{
+		TMPlayer tmp = getPlayer(p.getUniqueId());
+		super.handleLogout(p);
+		if (tmp != null)
+			plugin.getScoreManager().removeReceiver(tmp);
+		if (status == Status.IN_GAME)
+			lose(tmp);
 	}
 	
 	public void win(TMPlayer tmp)

@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -59,13 +60,18 @@ public class PlayerListener implements Listener
 			return;
 		ev.setCancelled(!i.getType().equals(Material.WRITTEN_BOOK));
 		
-		if (i.getType() == ItemsUtil.AXE.getType() && tmp != null)
+		if (i.getType() == ItemsUtil.AXE.getType() && tmp != null && plugin.getGame().getStatus() == Status.IN_GAME)
 			tmp.treeBreak(plugin, p);
-
 	}
 
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent ev)
+	{
+		ev.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onFoodLevelChanged(FoodLevelChangeEvent ev)
 	{
 		ev.setCancelled(true);
 	}

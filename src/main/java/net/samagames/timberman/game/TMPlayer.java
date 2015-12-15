@@ -5,8 +5,12 @@ import java.util.HashMap;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.timberman.Timberman;
 import net.samagames.timberman.util.ItemsUtil;
+import net.samagames.tools.chat.fanciful.FancyMessage;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -16,6 +20,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffectType;
 
 public class TMPlayer extends GamePlayer
 {
@@ -88,6 +93,7 @@ public class TMPlayer extends GamePlayer
 		gameloc.add(0, -1, 0).getBlock().setMetadata("pos", new FixedMetadataValue(plugin, "Rigner is god"));
 		
 		p.teleport(gameloc);
+		p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE, 128));
 		showTree(plugin, p);
 	}
 	
@@ -191,5 +197,25 @@ public class TMPlayer extends GamePlayer
 			plugin.getGame().win(this);
 		}
 	}
-
+	
+	@Override
+	public void setSpectator()
+	{
+		this.spectator = true;
+        Player bukkitPlayer = this.getPlayerIfOnline();
+        if (bukkitPlayer == null)
+            return;
+        bukkitPlayer.setGameMode(GameMode.ADVENTURE);
+        bukkitPlayer.setAllowFlight(true);
+        bukkitPlayer.setFlying(true);
+        bukkitPlayer.removePotionEffect(PotionEffectType.JUMP);
+        for (Player player : Bukkit.getOnlinePlayers())
+            player.hidePlayer(bukkitPlayer);
+        new FancyMessage("Cliquez ").color(ChatColor.YELLOW).style(ChatColor.BOLD).then("[ICI]").command("/hub").color(ChatColor.AQUA).style(ChatColor.BOLD).then(" pour retourner au hub !").color(ChatColor.YELLOW).style(ChatColor.BOLD).send(bukkitPlayer);
+	}
+	
+	public float getProgression()
+	{
+		return (float)currentPosition / (float)toDown;
+	}
 }
