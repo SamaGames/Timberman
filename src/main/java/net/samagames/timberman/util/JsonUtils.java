@@ -23,15 +23,13 @@ public class JsonUtils
         double x = json.get("x").getAsDouble();
         double y = json.get("y").getAsDouble();
         double z = json.get("z").getAsDouble();
-        try
-        {
-            float yaw = (float)json.get("yaw").getAsDouble();
-            float pitch = (float)json.get("pitch").getAsDouble();
-            return new Location(world, x, y, z, yaw, pitch);
-        }
-        catch (UnsupportedOperationException | NullPointerException ex)
-        {
-            return new Location(world, x, y, z);
-        }
+        Location loc = new Location(world, x, y, z);
+    	JsonElement elem = json.get("yaw");
+    	if (elem != null)
+    		loc.setYaw(elem.getAsFloat());
+    	elem = json.get("pitch");
+    	if (elem != null)
+    		loc.setPitch(elem.getAsFloat());
+    	return loc;
     }
 }
