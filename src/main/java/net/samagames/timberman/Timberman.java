@@ -15,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Timberman extends JavaPlugin
 {
 	public static final String NAME_BICOLOR = ChatColor.GOLD + "" + ChatColor.BOLD + "Timberman";
-	private static Timberman INSTANCE;
 	
 	private Location spawn;
 	private Location gamespawn;
@@ -30,8 +29,6 @@ public class Timberman extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		INSTANCE = this;
-		
 		api = SamaGamesAPI.get();
 		spawn = JsonUtils.getLocation(api.getGameManager().getGameProperties().getOption("spawn", null));
 		gamespawn = JsonUtils.getLocation(api.getGameManager().getGameProperties().getOption("gamespawn", null));
@@ -87,10 +84,5 @@ public class Timberman extends JavaPlugin
 	public ScoreboardManager getScoreManager()
 	{
 		return scoremanager;
-	}
-	
-	public static Timberman getInstance()
-	{
-		return INSTANCE;
 	}
 }
