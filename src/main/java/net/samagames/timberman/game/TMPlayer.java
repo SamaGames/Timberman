@@ -1,6 +1,7 @@
 package net.samagames.timberman.game;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import net.samagames.api.games.GamePlayer;
 import net.samagames.timberman.Timberman;
@@ -157,8 +158,8 @@ public class TMPlayer extends GamePlayer
 				blocs.put(1, Material.AIR);
 			}
 
-			for (int b : blocs.keySet()) {
-				p.sendBlockChange(this.treeloc.clone().add(b, (double)i + 1, 0), blocs.get(b), (byte) 0);
+			for (Entry<Integer, Material> entry : blocs.entrySet()) {
+				p.sendBlockChange(this.treeloc.clone().add(entry.getKey(), (double)i + 1, 0), entry.getValue(), (byte) 0);
 			}
 		}
 		
