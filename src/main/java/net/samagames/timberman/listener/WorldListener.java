@@ -34,12 +34,6 @@ public class WorldListener implements Listener
 			ev.setCancelled(true);
 		}
 	}
-	
-	@Override
-    public int hashCode()
-    {
-        return super.hashCode();
-    }
 
     @EventHandler
     public void onBlockGrowEvent(BlockGrowEvent event)
