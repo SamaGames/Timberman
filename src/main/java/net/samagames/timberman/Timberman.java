@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Timberman extends JavaPlugin
 {
 	public static final String NAME_BICOLOR = ChatColor.GOLD + "" + ChatColor.BOLD + "Timberman";
-	
+
 	private Location spawn;
 	private Location gamespawn;
 	private Location treespawn;
@@ -37,35 +37,35 @@ public class Timberman extends JavaPlugin
 		tree = new TreePattern(api.getGameManager().getGameProperties().getOption("height", null).getAsInt());
 		treeshowheight = api.getGameManager().getGameProperties().getOption("showheight", null).getAsInt();
 		Validate.noNullElements(new Object[]{spawn, gamespawn, treespawn, offset});
-		
+
 		game = new TMGame(this);
 		api.getGameManager().registerGame(game);
 		api.getGameManager().setMaxReconnectTime(-1);
 		scoremanager = new ScoreboardManager(this);
-		
+
 		getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		getServer().getScheduler().runTaskTimer(this, () -> scoremanager.update(), 10, 10);
 	}
-	
+
 	public Location getSpawn()
 	{
 		return spawn;
 	}
-	
+
 	public Location newGameSpawn()
 	{
 		Location loc = gamespawn.clone();
 		gamespawn.add(offset);
 		return loc;
 	}
-	
+
 	public Location newTreeSpawn()
 	{
 		Location loc = treespawn.clone();
 		treespawn.add(offset);
 		return loc;
 	}
-	
+
 	public TreePattern getTreePattern()
 	{
 		return tree;
