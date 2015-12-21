@@ -67,11 +67,9 @@ public class ScoreboardManager
 				if (name.length() > 13)
 					name = name.substring(0, 13);
 				if (!tmp.isSpectator())
-				{
 					obj.getScore(ChatColor.WHITE + " " + name).setScore((int)(tmp.getProgression() * 100));
-					continue ;
-				}
-				obj.getScore(" " + ChatColor.RED + name).setScore(0);
+				else
+					obj.getScore(" " + ChatColor.RED + name).setScore(0);
 			}
 			obj.getScore(ChatColor.GRAY + "Progression (%):").setScore(101);
 		}

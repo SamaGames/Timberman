@@ -1,6 +1,7 @@
 package net.samagames.timberman.game;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.block.BlockFace;
@@ -50,7 +51,7 @@ public class TreePattern
 		}
 	}
 
-	public HashMap<Integer, BlockFace> getBranchs()
+	public Map<Integer, BlockFace> getBranchs()
 	{
 		return branchs;
 	}

@@ -158,7 +158,7 @@ public class TMPlayer extends GamePlayer
 			}
 
 			for (int b : blocs.keySet()) {
-				p.sendBlockChange(this.treeloc.clone().add(b, i + 1, 0), blocs.get(b), (byte) 0);
+				p.sendBlockChange(this.treeloc.clone().add(b, (double)i + 1, 0), blocs.get(b), (byte) 0);
 			}
 		}
 		
@@ -174,12 +174,12 @@ public class TMPlayer extends GamePlayer
 		p.playEffect(treeloc, Effect.STEP_SOUND, Material.LOG);
 		
 		Material left = Material.AIR;
-		if(treeBlocks.containsKey(currentPosition))
-			if(treeBlocks.get(currentPosition).containsKey(1)) left = treeBlocks.get(currentPosition).get(1);
+		if (treeBlocks.containsKey(currentPosition) && treeBlocks.get(currentPosition).containsKey(1))
+			left = treeBlocks.get(currentPosition).get(1);
 
 		Material right = Material.AIR;
-		if(treeBlocks.containsKey(currentPosition))
-			if(treeBlocks.get(currentPosition).containsKey(-1)) right = treeBlocks.get(currentPosition).get(-1);
+		if (treeBlocks.containsKey(currentPosition) && treeBlocks.get(currentPosition).containsKey(-1))
+			right = treeBlocks.get(currentPosition).get(-1);
 		
 		boolean value = false;
 		

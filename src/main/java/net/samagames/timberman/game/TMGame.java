@@ -130,12 +130,9 @@ public class TMGame extends Game<TMPlayer>
 		tmp.setSpectator();
 		List<TMPlayer> players = new ArrayList<TMPlayer>();
 		for (TMPlayer t : this.getInGamePlayers().values())
-		{
-			if (t == null || t.isModerator() || t.isSpectator() || !t.isOnline())
-				continue ;
-			players.add(t);
-		}
-		if (players.size() == 0)
+			if (!(t == null || t.isModerator() || t.isSpectator() || !t.isOnline()))
+				players.add(t);
+		if (players.isEmpty())
 			handleGameEnd();
 		else if (players.size() == 1)
 			win(players.get(0));
