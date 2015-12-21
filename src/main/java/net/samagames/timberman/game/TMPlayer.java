@@ -28,8 +28,8 @@ public class TMPlayer extends GamePlayer
 	private HashMap<Integer, HashMap<Integer, Material>> treeBlocks;
 	private Location gameloc;
 	private Location treeloc;
-	private ArmorStand stand_left;
-	private ArmorStand stand_right;
+	private ArmorStand standleft;
+	private ArmorStand standright;
 	private int currentPosition;
 	private int toDown;
 	
@@ -73,23 +73,23 @@ public class TMPlayer extends GamePlayer
 		
 		Location left = treeloc.clone().add(1.3, 0, 0);
 		left.setYaw(90);
-		this.stand_left = (ArmorStand) treeloc.getWorld().spawnEntity(left, EntityType.ARMOR_STAND);
-		this.stand_left.setArms(true);
-		this.stand_left.setBasePlate(false);
-		this.stand_left.setCanPickupItems(false);
-		this.stand_left.setGravity(false);
-		this.stand_left.setVisible(false);
-		this.stand_left.setRemoveWhenFarAway(false);
+		this.standleft = (ArmorStand) treeloc.getWorld().spawnEntity(left, EntityType.ARMOR_STAND);
+		this.standleft.setArms(true);
+		this.standleft.setBasePlate(false);
+		this.standleft.setCanPickupItems(false);
+		this.standleft.setGravity(false);
+		this.standleft.setVisible(false);
+		this.standleft.setRemoveWhenFarAway(false);
 		
 		Location right = treeloc.clone().add(-1.3, 0, 0);
 		right.setYaw(-90);
-		this.stand_right = (ArmorStand) treeloc.getWorld().spawnEntity(right, EntityType.ARMOR_STAND);
-		this.stand_right.setArms(true);
-		this.stand_right.setBasePlate(false);
-		this.stand_right.setCanPickupItems(false);
-		this.stand_right.setGravity(false);
-		this.stand_right.setVisible(false);
-		this.stand_right.setRemoveWhenFarAway(false);
+		this.standright = (ArmorStand) treeloc.getWorld().spawnEntity(right, EntityType.ARMOR_STAND);
+		this.standright.setArms(true);
+		this.standright.setBasePlate(false);
+		this.standright.setCanPickupItems(false);
+		this.standright.setGravity(false);
+		this.standright.setVisible(false);
+		this.standright.setRemoveWhenFarAway(false);
 		
 		moveLeft();
 
@@ -102,41 +102,41 @@ public class TMPlayer extends GamePlayer
 	
 	public void moveLeft()
 	{
-		if (!this.stand_left.isVisible())
+		if (!this.standleft.isVisible())
 		{
-			this.stand_right.setHelmet(new ItemStack(Material.AIR));
-			this.stand_right.setChestplate(new ItemStack(Material.AIR));
-			this.stand_right.setLeggings(new ItemStack(Material.AIR));
-			this.stand_right.setBoots(new ItemStack(Material.AIR));
-			this.stand_right.setItemInHand(new ItemStack(Material.AIR));
-			this.stand_right.setVisible(false);
+			this.standright.setHelmet(new ItemStack(Material.AIR));
+			this.standright.setChestplate(new ItemStack(Material.AIR));
+			this.standright.setLeggings(new ItemStack(Material.AIR));
+			this.standright.setBoots(new ItemStack(Material.AIR));
+			this.standright.setItemInHand(new ItemStack(Material.AIR));
+			this.standright.setVisible(false);
 			
-			this.stand_left.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
-			this.stand_left.setVisible(true);
-			this.stand_left.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
-			this.stand_left.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-			this.stand_left.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-			this.stand_left.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+			this.standleft.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
+			this.standleft.setVisible(true);
+			this.standleft.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
+			this.standleft.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+			this.standleft.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+			this.standleft.setBoots(new ItemStack(Material.LEATHER_BOOTS));
 		}
 	}
 	
 	public void moveRight()
 	{
-		if (!this.stand_right.isVisible())
+		if (!this.standright.isVisible())
 		{
-			this.stand_left.setHelmet(new ItemStack(Material.AIR));
-			this.stand_left.setChestplate(new ItemStack(Material.AIR));
-			this.stand_left.setLeggings(new ItemStack(Material.AIR));
-			this.stand_left.setBoots(new ItemStack(Material.AIR));
-			this.stand_left.setItemInHand(new ItemStack(Material.AIR));
-			this.stand_left.setVisible(false);
+			this.standleft.setHelmet(new ItemStack(Material.AIR));
+			this.standleft.setChestplate(new ItemStack(Material.AIR));
+			this.standleft.setLeggings(new ItemStack(Material.AIR));
+			this.standleft.setBoots(new ItemStack(Material.AIR));
+			this.standleft.setItemInHand(new ItemStack(Material.AIR));
+			this.standleft.setVisible(false);
 			
-			this.stand_right.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
-			this.stand_right.setVisible(true);
-			this.stand_right.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
-			this.stand_right.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-			this.stand_right.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-			this.stand_right.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+			this.standright.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
+			this.standright.setVisible(true);
+			this.standright.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
+			this.standright.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+			this.standright.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+			this.standright.setBoots(new ItemStack(Material.LEATHER_BOOTS));
 		}
 	}
 	
@@ -184,8 +184,10 @@ public class TMPlayer extends GamePlayer
 		
 		boolean value = false;
 		
-		if (this.stand_left.isVisible() && left != Material.AIR) value = true;
-		if (this.stand_right.isVisible() && right != Material.AIR) value = true;
+		if (this.standleft.isVisible() && left != Material.AIR)
+			value = true;
+		if (this.standright.isVisible() && right != Material.AIR)
+			value = true;
 		
 		if (value)
 		{

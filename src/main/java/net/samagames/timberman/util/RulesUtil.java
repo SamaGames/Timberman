@@ -26,14 +26,14 @@ public class RulesUtil
 				"\n Vous devez couper" +
 				"\n un arbre sans vous" +
 				"\n prendre de branche.",
-				
+
 				"\n §lComment jouer ?§0\n" +
 				" Utilisez la hache" +
 				"\n pour couper, et" +
 				"\n déplacez vous de" +
 				"\n droite à gauche" +
 				"\n pour esquiver.",
-				
+
 				"\n\nJeu développé par :" +
 				"\n\n - §lRigner§0" +
 				"\n\nInspiré par le jeu de" +
