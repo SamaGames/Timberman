@@ -11,9 +11,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class ItemsUtil
 {
-	private ItemsUtil(){}
-	
 	public static final ItemStack AXE = setItemMeta(Material.DIAMOND_AXE, 1, (short)0, "&b&lHache de bucheron", null);
+	
+	private ItemsUtil(){}
 	
 	public static ItemStack setItemMeta(ItemStack item, String name, String[] lore)
 	{
