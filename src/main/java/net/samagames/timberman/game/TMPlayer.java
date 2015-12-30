@@ -230,4 +230,11 @@ public class TMPlayer extends GamePlayer {
     public float getProgression() {
         return (float) currentPosition / (float) toDown;
     }
+
+    public String getDisplayName() {
+        Player p = getPlayerIfOnline();
+        if (p == null)
+            return getOfflinePlayer().getName();
+        return p.getDisplayName();
+    }
 }
