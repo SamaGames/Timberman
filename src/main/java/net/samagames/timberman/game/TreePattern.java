@@ -6,28 +6,22 @@ import java.util.Random;
 
 import org.bukkit.block.BlockFace;
 
-public class TreePattern
-{	
+public class TreePattern {
     private HashMap<Integer, BlockFace> branchs = new HashMap<Integer, BlockFace>();
     private int height;
 
-    public TreePattern(int height)
-    {
+    public TreePattern(int height) {
         this.height = height;
 
         Random r = new Random();
 
         int wait = 3;
 
-        for (int i = 0; i < height; i++)
-        {	
-            if (wait > 0)
-            {
-                wait --;
+        for (int i = 0; i < height; i++) {
+            if (wait > 0) {
+                wait--;
                 branchs.put(i, BlockFace.SELF);
-            }
-            else
-            {
+            } else {
                 int value = r.nextInt(9);
 
                 switch (value) {
@@ -51,13 +45,11 @@ public class TreePattern
         }
     }
 
-    public Map<Integer, BlockFace> getBranchs()
-    {
+    public Map<Integer, BlockFace> getBranchs() {
         return branchs;
     }
 
-    public int getHeight()
-    {
+    public int getHeight() {
         return height;
     }
 }

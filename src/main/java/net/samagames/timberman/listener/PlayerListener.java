@@ -78,8 +78,7 @@ public class PlayerListener implements Listener
     }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent ev)
-    {
+    public void onDamage(EntityDamageEvent ev) {
         ev.setCancelled(true);
     }
 }

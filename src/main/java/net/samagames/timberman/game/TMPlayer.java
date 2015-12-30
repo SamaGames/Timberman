@@ -23,8 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffectType;
 
-public class TMPlayer extends GamePlayer
-{
+public class TMPlayer extends GamePlayer {
     private HashMap<Integer, HashMap<Integer, Material>> treeBlocks;
     private Location gameloc;
     private Location treeloc;
@@ -33,13 +32,11 @@ public class TMPlayer extends GamePlayer
     private int currentPosition;
     private int toDown;
 
-    public TMPlayer(Player player)
-    {
+    public TMPlayer(Player player) {
         super(player);
     }
 
-    public void startGame(Timberman plugin, Player p)
-    {
+    public void startGame(Timberman plugin, Player p) {
         gameloc = plugin.newGameSpawn();
         treeloc = plugin.newTreeSpawn();
         currentPosition = 0;
@@ -73,7 +70,8 @@ public class TMPlayer extends GamePlayer
 
         Location left = treeloc.clone().add(1.3, 0, 0);
         left.setYaw(90);
-        this.standleft = (ArmorStand) treeloc.getWorld().spawnEntity(left, EntityType.ARMOR_STAND);
+        this.standleft = (ArmorStand) treeloc.getWorld().spawnEntity(left,
+                EntityType.ARMOR_STAND);
         this.standleft.setArms(true);
         this.standleft.setBasePlate(false);
         this.standleft.setCanPickupItems(false);
@@ -83,7 +81,8 @@ public class TMPlayer extends GamePlayer
 
         Location right = treeloc.clone().add(-1.3, 0, 0);
         right.setYaw(-90);
-        this.standright = (ArmorStand) treeloc.getWorld().spawnEntity(right, EntityType.ARMOR_STAND);
+        this.standright = (ArmorStand) treeloc.getWorld().spawnEntity(right,
+                EntityType.ARMOR_STAND);
         this.standright.setArms(true);
         this.standright.setBasePlate(false);
         this.standright.setCanPickupItems(false);
@@ -93,17 +92,20 @@ public class TMPlayer extends GamePlayer
 
         moveLeft();
 
-        gameloc.clone().add(0, -1, 0).getBlock().setMetadata("pos", new FixedMetadataValue(plugin, "Rigner is god"));
+        gameloc.clone()
+                .add(0, -1, 0)
+                .getBlock()
+                .setMetadata("pos",
+                        new FixedMetadataValue(plugin, "Rigner is god"));
 
         p.teleport(gameloc);
-        p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE, 128));
+        p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE,
+                128));
         showTree(plugin, p);
     }
 
-    public void moveLeft()
-    {
-        if (!this.standleft.isVisible())
-        {
+    public void moveLeft() {
+        if (!this.standleft.isVisible()) {
             this.standright.setHelmet(new ItemStack(Material.AIR));
             this.standright.setChestplate(new ItemStack(Material.AIR));
             this.standright.setLeggings(new ItemStack(Material.AIR));
@@ -113,17 +115,18 @@ public class TMPlayer extends GamePlayer
 
             this.standleft.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
             this.standleft.setVisible(true);
-            this.standleft.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
-            this.standleft.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-            this.standleft.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+            this.standleft.setHelmet(ItemsUtil.createHead(this
+                    .getOfflinePlayer().getName()));
+            this.standleft.setChestplate(new ItemStack(
+                    Material.LEATHER_CHESTPLATE));
+            this.standleft
+                    .setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
             this.standleft.setBoots(new ItemStack(Material.LEATHER_BOOTS));
         }
     }
 
-    public void moveRight()
-    {
-        if (!this.standright.isVisible())
-        {
+    public void moveRight() {
+        if (!this.standright.isVisible()) {
             this.standleft.setHelmet(new ItemStack(Material.AIR));
             this.standleft.setChestplate(new ItemStack(Material.AIR));
             this.standleft.setLeggings(new ItemStack(Material.AIR));
@@ -133,21 +136,22 @@ public class TMPlayer extends GamePlayer
 
             this.standright.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
             this.standright.setVisible(true);
-            this.standright.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
-            this.standright.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-            this.standright.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+            this.standright.setHelmet(ItemsUtil.createHead(this
+                    .getOfflinePlayer().getName()));
+            this.standright.setChestplate(new ItemStack(
+                    Material.LEATHER_CHESTPLATE));
+            this.standright
+                    .setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
             this.standright.setBoots(new ItemStack(Material.LEATHER_BOOTS));
         }
     }
 
     @SuppressWarnings("deprecation")
-    public void showTree(Timberman plugin, Player p)
-    {
+    public void showTree(Timberman plugin, Player p) {
         int startpos = currentPosition;
         int maxshow = plugin.getTreeShowHeight();
 
-        for(int i = 0; i <= maxshow; i++)
-        {
+        for (int i = 0; i <= maxshow; i++) {
             HashMap<Integer, Material> blocs = new HashMap<Integer, Material>();
 
             if (treeBlocks.containsKey(startpos + i)) {
@@ -159,14 +163,15 @@ public class TMPlayer extends GamePlayer
             }
 
             for (Entry<Integer, Material> entry : blocs.entrySet()) {
-                p.sendBlockChange(this.treeloc.clone().add(entry.getKey(), (double)i + 1, 0), entry.getValue(), (byte) 0);
+                p.sendBlockChange(
+                        this.treeloc.clone().add(entry.getKey(),
+                                (double) i + 1, 0), entry.getValue(), (byte) 0);
             }
         }
 
     }
 
-    public void treeBreak(Timberman plugin, Player p)
-    {	
+    public void treeBreak(Timberman plugin, Player p) {
         currentPosition++;
 
         showTree(plugin, p);
@@ -175,11 +180,13 @@ public class TMPlayer extends GamePlayer
         p.playEffect(treeloc, Effect.STEP_SOUND, Material.LOG);
 
         Material left = Material.AIR;
-        if (treeBlocks.containsKey(currentPosition) && treeBlocks.get(currentPosition).containsKey(1))
+        if (treeBlocks.containsKey(currentPosition)
+                && treeBlocks.get(currentPosition).containsKey(1))
             left = treeBlocks.get(currentPosition).get(1);
 
         Material right = Material.AIR;
-        if (treeBlocks.containsKey(currentPosition) && treeBlocks.get(currentPosition).containsKey(-1))
+        if (treeBlocks.containsKey(currentPosition)
+                && treeBlocks.get(currentPosition).containsKey(-1))
             right = treeBlocks.get(currentPosition).get(-1);
 
         boolean value = false;
@@ -189,13 +196,12 @@ public class TMPlayer extends GamePlayer
         if (this.standright.isVisible() && right != Material.AIR)
             value = true;
 
-        if (value)
-        {
+        if (value) {
             plugin.getGame().lose(this);
             return;
         }
 
-        p.setExp((float)currentPosition / (float)toDown);
+        p.setExp((float) currentPosition / (float) toDown);
 
         if (currentPosition >= toDown) {
             plugin.getGame().win(this);
@@ -203,8 +209,7 @@ public class TMPlayer extends GamePlayer
     }
 
     @Override
-    public void setSpectator()
-    {
+    public void setSpectator() {
         this.spectator = true;
         Player bukkitPlayer = this.getPlayerIfOnline();
         if (bukkitPlayer == null)
@@ -215,11 +220,14 @@ public class TMPlayer extends GamePlayer
         bukkitPlayer.removePotionEffect(PotionEffectType.JUMP);
         for (Player player : Bukkit.getOnlinePlayers())
             player.hidePlayer(bukkitPlayer);
-        new FancyMessage("Cliquez ").color(ChatColor.YELLOW).style(ChatColor.BOLD).then("[ICI]").command("/hub").color(ChatColor.AQUA).style(ChatColor.BOLD).then(" pour retourner au hub !").color(ChatColor.YELLOW).style(ChatColor.BOLD).send(bukkitPlayer);
+        new FancyMessage("Cliquez ").color(ChatColor.YELLOW)
+                .style(ChatColor.BOLD).then("[ICI]").command("/hub")
+                .color(ChatColor.AQUA).style(ChatColor.BOLD)
+                .then(" pour retourner au hub !").color(ChatColor.YELLOW)
+                .style(ChatColor.BOLD).send(bukkitPlayer);
     }
 
-    public float getProgression()
-    {
-        return (float)currentPosition / (float)toDown;
+    public float getProgression() {
+        return (float) currentPosition / (float) toDown;
     }
 }
