@@ -113,7 +113,7 @@ public class TMGame extends Game<TMPlayer>
 
     public void lose(TMPlayer tmp)
     {
-        if (tmp == null || !tmp.isOnline())
+        if (tmp == null)
             return ;
         plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + " " + tmp.getDisplayName() + ChatColor.WHITE + " est éliminé !");
         tmp.setSpectator();

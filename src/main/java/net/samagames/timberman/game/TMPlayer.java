@@ -189,14 +189,8 @@ public class TMPlayer extends GamePlayer {
                 && treeBlocks.get(currentPosition).containsKey(-1))
             right = treeBlocks.get(currentPosition).get(-1);
 
-        boolean value = false;
-
-        if (this.standleft.isVisible() && left != Material.AIR)
-            value = true;
-        if (this.standright.isVisible() && right != Material.AIR)
-            value = true;
-
-        if (value) {
+        if ((this.standleft.isVisible() && left != Material.AIR)
+                || (this.standright.isVisible() && right != Material.AIR)) {
             plugin.getGame().lose(this);
         } else {
             p.setExp((float) currentPosition / (float) toDown);
