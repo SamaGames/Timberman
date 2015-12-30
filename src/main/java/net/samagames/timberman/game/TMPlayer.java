@@ -198,13 +198,12 @@ public class TMPlayer extends GamePlayer {
 
         if (value) {
             plugin.getGame().lose(this);
-            return;
-        }
+        } else {
+            p.setExp((float) currentPosition / (float) toDown);
 
-        p.setExp((float) currentPosition / (float) toDown);
-
-        if (currentPosition >= toDown) {
-            plugin.getGame().win(this);
+            if (currentPosition >= toDown) {
+                plugin.getGame().win(this);
+            }
         }
     }
 
