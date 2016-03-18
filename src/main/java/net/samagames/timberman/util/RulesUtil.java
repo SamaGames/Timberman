@@ -8,11 +8,16 @@ import org.bukkit.inventory.meta.BookMeta;
 
 public class RulesUtil
 {
+    private static ItemStack book = null;
+
     private RulesUtil() {
     }
 
     public static ItemStack getRulesBook()
     {
+        if (book != null)
+            return book;
+
         String[] raw = new String[]{
                 "\n   ]--------------[" +
                 "\n      " + Timberman.NAME_BICOLOR + "§0" +

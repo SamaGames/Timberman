@@ -10,6 +10,7 @@ import net.samagames.timberman.util.JsonUtils;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class Timberman extends JavaPlugin
             Location tmp2 = JsonUtils.getLocation(api.getGameManager().getGameProperties().getConfig("treespawn-" + i, null));
             if (tmp == null || tmp2 == null)
                 break ;
+            tmp2.getBlock().setType(Material.LOG);
             gamespawn.add(tmp);
             treespawn.add(tmp2);
             i++;
