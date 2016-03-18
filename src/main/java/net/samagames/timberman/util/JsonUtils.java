@@ -14,6 +14,8 @@ public class JsonUtils
 
     public static Location getLocation(JsonElement object)
     {
+        if (object == null)
+            return null;
         JsonObject json = object.getAsJsonObject();
         String w = json.get("world").getAsString();
         if (w == null)
