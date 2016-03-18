@@ -22,7 +22,7 @@ public class RulesUtil
                         " Vous devez couper\n" +
                         " un arbre sans vous\n" +
                         " prendre de branche.")
-                .addPage("Comment jouer ?",
+                .addPage("Comment jouer",
                         " Utilisez la hache\n" +
                         " pour couper, et\n" +
                         " déplacez vous de\n" +
