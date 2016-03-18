@@ -57,7 +57,6 @@ public class TMGame extends Game<TMPlayer>
         Inventory inv = p.getInventory();
         inv.clear();
         inv.setItem(4, RulesUtil.getRulesBook());
-        inv.setItem(8, coherenceMachine.getLeaveItem());
     }
 
     public void givePlayingInventory(Player p)
@@ -68,7 +67,6 @@ public class TMGame extends Game<TMPlayer>
         inv.clear();
         inv.setItem(0, ItemsUtil.AXE);
         inv.setItem(4, RulesUtil.getRulesBook());
-        inv.setItem(8, coherenceMachine.getLeaveItem());
         p.setLevel(0);
         p.setExp(0);
     }

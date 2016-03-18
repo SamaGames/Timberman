@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.timberman.Timberman;
 import net.samagames.timberman.util.ItemsUtil;
+import net.samagames.timberman.util.RulesUtil;
 import net.samagames.tools.chat.fanciful.FancyMessage;
 
 import org.bukkit.Bukkit;
@@ -210,6 +211,7 @@ public class TMPlayer extends GamePlayer {
         if (bukkitPlayer == null)
             return;
         bukkitPlayer.getInventory().clear();
+        bukkitPlayer.getInventory().setItem(4, RulesUtil.getRulesBook());
         bukkitPlayer.setGameMode(GameMode.ADVENTURE);
         bukkitPlayer.setAllowFlight(true);
         bukkitPlayer.setFlying(true);
