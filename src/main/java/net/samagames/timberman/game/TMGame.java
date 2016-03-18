@@ -14,15 +14,19 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitTask;
 
 public class TMGame extends Game<TMPlayer>
 {
     private Timberman plugin;
+    private int countdown;
+    private BukkitTask countdownTask;
 
     public TMGame(Timberman main)
     {
         super("timberman", "TimberMan", "", TMPlayer.class);
         plugin = main;
+        this.countdown = 10;
     }
 
     @Override
@@ -72,7 +76,7 @@ public class TMGame extends Game<TMPlayer>
     @Override
     public void startGame()
     {
-        if (this.isGameStarted())
+        if (this.isGameStarted() || this.isStarted())
             return ;
         super.startGame();
         startTime = System.currentTimeMillis();
@@ -84,6 +88,19 @@ public class TMGame extends Game<TMPlayer>
             givePlayingInventory(p);
             tmp.startGame(plugin, p);
         }
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            for (Player player : plugin.getServer().getOnlinePlayers())
+                if (countdown == 0)
+                    Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Coupez !");
+                else if (countdown == 10 || countdown < 6)
+                    Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + "secondes");
+            if (countdown == 0)
+            {
+                countdownTask.cancel();
+                return ;
+            }
+            countdown--;
+        }, 20, 20);
     }
 
     @Override
@@ -125,5 +142,10 @@ public class TMGame extends Game<TMPlayer>
             handleGameEnd();
         else if (players.size() == 1)
             win(players.get(0));
+    }
+
+    public boolean isStarted()
+    {
+        return countdown == 0;
     }
 }

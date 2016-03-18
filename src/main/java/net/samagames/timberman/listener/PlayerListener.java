@@ -57,7 +57,8 @@ public class PlayerListener implements Listener {
         ev.setCancelled(!i.getType().equals(Material.WRITTEN_BOOK));
 
         if (i.getType() == ItemsUtil.AXE.getType() && tmp != null
-                && plugin.getGame().getStatus() == Status.IN_GAME)
+                && plugin.getGame().getStatus() == Status.IN_GAME
+                && plugin.getGame().isStarted())
             tmp.treeBreak(plugin, p);
     }
 
