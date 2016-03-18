@@ -88,19 +88,19 @@ public class TMGame extends Game<TMPlayer>
             givePlayingInventory(p);
             tmp.startGame(plugin, p);
         }
-        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : plugin.getServer().getOnlinePlayers())
                 if (countdown == 0)
                     Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Coupez !");
                 else if (countdown == 10 || countdown < 6)
-                    Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + "secondes");
+                    Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + " secondes");
             if (countdown == 0)
             {
                 countdownTask.cancel();
                 return ;
             }
             countdown--;
-        }, 20, 20);
+        }, 0, 20);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class TMGame extends Game<TMPlayer>
             return ;
         plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + " " + tmp.getDisplayName() + ChatColor.WHITE + " est éliminé !");
         tmp.setSpectator();
-        List<TMPlayer> players = new ArrayList<TMPlayer>();
+        List<TMPlayer> players = new ArrayList<>();
         for (TMPlayer t : this.getInGamePlayers().values())
             if (!(t == null || t.isModerator() || t.isSpectator() || !t.isOnline()))
                 players.add(t);
