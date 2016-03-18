@@ -94,10 +94,12 @@ public class TMGame extends Game<TMPlayer>
                     Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + " secondes");
             if (countdown == 0)
             {
+                coherenceMachine.getMessageManager().writeCustomMessage("Coupez !", true);
                 countdown--;
                 countdownTask.cancel();
                 return ;
             }
+            coherenceMachine.getMessageManager().writeCustomMessage("Début dans " + countdown + " secondes", true);
             countdown--;
         }, 0, 20);
     }
