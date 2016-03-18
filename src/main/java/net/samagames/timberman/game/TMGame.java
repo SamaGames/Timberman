@@ -96,6 +96,7 @@ public class TMGame extends Game<TMPlayer>
                     Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + " secondes");
             if (countdown == 0)
             {
+                countdown--;
                 countdownTask.cancel();
                 return ;
             }
@@ -146,6 +147,6 @@ public class TMGame extends Game<TMPlayer>
 
     public boolean isStarted()
     {
-        return countdown == 0;
+        return countdown == -1;
     }
 }

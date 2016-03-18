@@ -172,6 +172,8 @@ public class TMPlayer extends GamePlayer {
     }
 
     public void treeBreak(Timberman plugin, Player p) {
+        if (this.spectator)
+            return ;
         currentPosition++;
 
         showTree(plugin, p);
@@ -207,6 +209,7 @@ public class TMPlayer extends GamePlayer {
         Player bukkitPlayer = this.getPlayerIfOnline();
         if (bukkitPlayer == null)
             return;
+        bukkitPlayer.getInventory().clear();
         bukkitPlayer.setGameMode(GameMode.ADVENTURE);
         bukkitPlayer.setAllowFlight(true);
         bukkitPlayer.setFlying(true);
