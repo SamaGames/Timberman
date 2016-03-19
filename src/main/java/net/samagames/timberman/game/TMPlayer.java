@@ -53,12 +53,12 @@ public class TMPlayer extends GamePlayer {
         treeloc = plugin.newTreeSpawn();
         currentPosition = 0;
         toDown = 0;
-        treeBlocks = new HashMap<Integer, HashMap<Integer, Material>>();
+        treeBlocks = new HashMap<>();
 
         TreePattern tree = plugin.getTreePattern();
         for (int i = 0; i < tree.getHeight(); i++) {
 
-            HashMap<Integer, Material> blocks = new HashMap<Integer, Material>();
+            HashMap<Integer, Material> blocks = new HashMap<>();
 
             blocks.put(0, Material.LOG);
 
@@ -164,7 +164,7 @@ public class TMPlayer extends GamePlayer {
         int maxshow = plugin.getTreeShowHeight();
 
         for (int i = 0; i <= maxshow; i++) {
-            HashMap<Integer, Material> blocs = new HashMap<Integer, Material>();
+            HashMap<Integer, Material> blocs = new HashMap<>();
 
             if (treeBlocks.containsKey(startpos + i)) {
                 blocs = treeBlocks.get(startpos + i);
@@ -254,13 +254,13 @@ public class TMPlayer extends GamePlayer {
         players.addAll(this.game.getSpectatorPlayers().values().stream().filter(player -> !player.isModerator()).collect(Collectors.toList()));
         this.objective.setLine(0, " ");
         this.objective.setLine(1, ChatColor.WHITE + " Joueurs : " + ChatColor.GRAY + players.size());
-        this.objective.setLine(2, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime());
+        this.objective.setLine(2, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime() + "s");
         this.objective.setLine(3, "  ");
         this.objective.setLine(4, ChatColor.WHITE + " Progression (%) :");
         int i = 5;
         for (TMPlayer player : players)
         {
-            this.objective.setLine(i, (player.isSpectator() ? ChatColor.RED : ChatColor.WHITE) + player.getOfflinePlayer().getName() + " : " + ChatColor.GRAY + (int)(player.getProgression() * 100));
+            this.objective.setLine(i, "  " + (player.isSpectator() ? ChatColor.RED : ChatColor.WHITE) + player.getOfflinePlayer().getName() + " : " + ChatColor.GRAY + (int)(player.getProgression() * 100));
             i++;
         }
         this.objective.setLine(i, "   ");
