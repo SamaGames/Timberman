@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.samagames.api.games.GamePlayer;
+import net.samagames.api.games.Status;
 import net.samagames.timberman.Timberman;
 import net.samagames.timberman.util.ItemsUtil;
 import net.samagames.timberman.util.RulesUtil;
@@ -254,16 +255,19 @@ public class TMPlayer extends GamePlayer {
         players.addAll(this.game.getSpectatorPlayers().values().stream().filter(player -> !player.isModerator()).collect(Collectors.toList()));
         this.objective.setLine(0, " ");
         this.objective.setLine(1, ChatColor.WHITE + " Joueurs : " + ChatColor.GRAY + players.size());
-        this.objective.setLine(2, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime() + "s");
+        if (game.getStatus() == Status.IN_GAME || game.getStatus() == Status.FINISHED)
+            this.objective.setLine(2, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime() + "s");
         this.objective.setLine(3, "  ");
-        this.objective.setLine(4, ChatColor.WHITE + " Progression (%) :");
-        int i = 5;
-        for (TMPlayer player : players)
+        if (game.getStatus() == Status.IN_GAME || game.getStatus() == Status.FINISHED)
         {
-            this.objective.setLine(i, "  " + (player.isSpectator() ? ChatColor.RED : ChatColor.WHITE) + player.getOfflinePlayer().getName() + " : " + ChatColor.GRAY + (int)(player.getProgression() * 100));
-            i++;
+            this.objective.setLine(4, ChatColor.WHITE + " Progression (%) :");
+            int i = 5;
+            for (TMPlayer player : players) {
+                this.objective.setLine(i, "  " + (player.isSpectator() ? ChatColor.RED : ChatColor.WHITE) + player.getOfflinePlayer().getName() + " : " + ChatColor.GRAY + (int) (player.getProgression() * 100));
+                i++;
+            }
+            this.objective.setLine(i, "   ");
         }
-        this.objective.setLine(i, "   ");
         this.objective.updateLines();
     }
 }
