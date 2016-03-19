@@ -21,12 +21,14 @@ public class TMGame extends Game<TMPlayer>
     private Timberman plugin;
     private int countdown;
     private BukkitTask countdownTask;
+    private int time;
 
     public TMGame(Timberman main)
     {
         super("timberman", "TimberMan", "", TMPlayer.class);
         plugin = main;
         this.countdown = 10;
+        this.time = 0;
     }
 
     @Override
@@ -43,11 +45,6 @@ public class TMGame extends Game<TMPlayer>
         p.setHealth(20);
         p.setLevel(0);
         giveWaitingInventory(p);
-        plugin.getServer().getScheduler().runTask(plugin, () -> {
-            TMPlayer tmp = getPlayer(p.getUniqueId());
-            if (tmp != null)
-                plugin.getScoreManager().addReceiver(tmp);
-        });
     }
 
     public void giveWaitingInventory(Player p)
@@ -102,6 +99,10 @@ public class TMGame extends Game<TMPlayer>
             coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début dans " + ChatColor.RED + countdown + " seconde" + (countdown == 1 ? "" : "s") + ChatColor.YELLOW + ".", true);
             countdown--;
         }, 0, 20);
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            time++;
+            this.gamePlayers.forEach((uuid, player) -> player.updateScoreboard());
+        }, 20, 20);
     }
 
     @Override
@@ -109,8 +110,6 @@ public class TMGame extends Game<TMPlayer>
     {
         TMPlayer tmp = getPlayer(p.getUniqueId());
         super.handleLogout(p);
-        if (tmp != null)
-            plugin.getScoreManager().removeReceiver(tmp);
         if (status == Status.IN_GAME)
             lose(tmp);
     }
@@ -148,5 +147,10 @@ public class TMGame extends Game<TMPlayer>
     public boolean isStarted()
     {
         return countdown == -1;
+    }
+
+    public int getTime()
+    {
+        return time;
     }
 }

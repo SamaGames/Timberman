@@ -1,7 +1,11 @@
 package net.samagames.timberman.game;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.samagames.api.games.GamePlayer;
 import net.samagames.timberman.Timberman;
@@ -9,6 +13,7 @@ import net.samagames.timberman.util.ItemsUtil;
 import net.samagames.timberman.util.RulesUtil;
 import net.samagames.tools.chat.fanciful.FancyMessage;
 
+import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -32,9 +37,15 @@ public class TMPlayer extends GamePlayer {
     private ArmorStand standright;
     private int currentPosition;
     private int toDown;
+    private ObjectiveSign objective;
+    private TMGame game;
 
     public TMPlayer(Player player) {
         super(player);
+        this.objective = new ObjectiveSign("timberman", ChatColor.GOLD + "Timberman");
+        this.objective.addReceiver(this.getOfflinePlayer());
+        this.updateScoreboard();
+        game = Timberman.getPlugin(Timberman.class).getGame();
     }
 
     public void startGame(Timberman plugin, Player p) {
@@ -234,5 +245,25 @@ public class TMPlayer extends GamePlayer {
         if (p == null)
             return getOfflinePlayer().getName();
         return p.getDisplayName();
+    }
+
+    public void updateScoreboard()
+    {
+        Collection<TMPlayer> players = new HashSet<>();
+        players.addAll(this.game.getInGamePlayers().values());
+        players.addAll(this.game.getSpectatorPlayers().values().stream().filter(player -> !player.isModerator()).collect(Collectors.toList()));
+        this.objective.setLine(0, " ");
+        this.objective.setLine(1, ChatColor.WHITE + " Joueurs : " + ChatColor.GRAY + players.size());
+        this.objective.setLine(2, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime());
+        this.objective.setLine(3, "  ");
+        this.objective.setLine(4, ChatColor.WHITE + " Progression (%) :");
+        int i = 5;
+        for (TMPlayer player : players)
+        {
+            this.objective.setLine(i, (player.isSpectator() ? ChatColor.RED : ChatColor.WHITE) + player.getOfflinePlayer().getName() + " : " + ChatColor.GRAY + (int)(player.getProgression() * 100));
+            i++;
+        }
+        this.objective.setLine(i, "   ");
+        this.objective.updateLines();
     }
 }
