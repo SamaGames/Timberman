@@ -44,8 +44,8 @@ public class TMPlayer extends GamePlayer {
         super(player);
         this.objective = new ObjectiveSign("timberman", ChatColor.GOLD + "Timberman");
         this.objective.addReceiver(this.getOfflinePlayer());
-        this.updateScoreboard();
         game = Timberman.getPlugin(Timberman.class).getGame();
+        this.updateScoreboard();
     }
 
     public void startGame(Timberman plugin, Player p) {
