@@ -1,10 +1,7 @@
 package net.samagames.timberman.game;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.samagames.api.games.GamePlayer;
@@ -250,24 +247,33 @@ public class TMPlayer extends GamePlayer {
 
     public void updateScoreboard()
     {
-        Collection<TMPlayer> players = new HashSet<>();
+        List<TMPlayer> players = new ArrayList<>();
         players.addAll(this.game.getInGamePlayers().values());
         players.addAll(this.game.getSpectatorPlayers().values().stream().filter(player -> !player.isModerator()).collect(Collectors.toList()));
-        this.objective.setLine(0, " ");
-        this.objective.setLine(1, ChatColor.WHITE + " Joueurs : " + ChatColor.GRAY + players.size());
-        if (game.getStatus() == Status.IN_GAME || game.getStatus() == Status.FINISHED)
-            this.objective.setLine(2, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime() + "s");
-        this.objective.setLine(3, "  ");
+        this.objective.setLine(1, " ");
+        this.objective.setLine(2, ChatColor.WHITE + " Joueurs : " + ChatColor.GRAY + players.size());
         if (game.getStatus() == Status.IN_GAME || game.getStatus() == Status.FINISHED)
         {
-            this.objective.setLine(4, ChatColor.WHITE + " Progression (%) :");
-            int i = 5;
-            for (TMPlayer player : players) {
+            this.objective.setLine(3, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime() + "s");
+            this.objective.setLine(4, "  ");
+            this.objective.setLine(5, ChatColor.WHITE + " Progression (%) :");
+            int i = 6;
+            Collections.sort(players, (first, second) -> {
+                if (first.getProgression() != second.getProgression())
+                    return (int)((second.getProgression() - first.getProgression()) * 100);
+                if (first.isSpectator() != second.isSpectator())
+                    return (first.isSpectator() ? -1 : 1);
+                return (0);
+            });
+            for (TMPlayer player : players)
+            {
                 this.objective.setLine(i, "  " + (player.isSpectator() ? ChatColor.RED : ChatColor.WHITE) + player.getOfflinePlayer().getName() + " : " + ChatColor.GRAY + (int) (player.getProgression() * 100));
                 i++;
             }
             this.objective.setLine(i, "   ");
         }
+        else
+            this.objective.setLine(3, "  ");
         this.objective.updateLines();
     }
 }
