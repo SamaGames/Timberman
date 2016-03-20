@@ -258,13 +258,7 @@ public class TMPlayer extends GamePlayer {
             this.objective.setLine(4, "  ");
             this.objective.setLine(5, ChatColor.WHITE + " Progression (%) :");
             int i = 6;
-            Collections.sort(players, (first, second) -> {
-                if (first.getProgression() != second.getProgression())
-                    return (int)((second.getProgression() - first.getProgression()) * 100);
-                if (first.isSpectator() != second.isSpectator())
-                    return (first.isSpectator() ? -1 : 1);
-                return (0);
-            });
+            Collections.sort(players, new TMPlayerComparator());
             for (TMPlayer player : players)
             {
                 this.objective.setLine(i, "  " + (player.isSpectator() ? ChatColor.RED : ChatColor.WHITE) + player.getOfflinePlayer().getName() + " : " + ChatColor.GRAY + (int) (player.getProgression() * 100));
@@ -275,5 +269,18 @@ public class TMPlayer extends GamePlayer {
         else
             this.objective.setLine(3, "  ");
         this.objective.updateLines();
+    }
+
+    private static class TMPlayerComparator implements Comparator<TMPlayer>
+    {
+        @Override
+        public int compare(TMPlayer first, TMPlayer second)
+        {
+            if (first.getProgression() != second.getProgression())
+                return (int)((second.getProgression() - first.getProgression()) * 100);
+            if (first.isSpectator() != second.isSpectator())
+                return first.isSpectator() ? -1 : 1;
+            return 0;
+        }
     }
 }

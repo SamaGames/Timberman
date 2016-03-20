@@ -22,7 +22,7 @@ public class Timberman extends JavaPlugin
     private Location spawn;
     private List<Location> gamespawn;
     private List<Location> treespawn;
-    private int spawnindex[] = {0, 0};
+    private int[] spawnindex = {0, 0};
     private TreePattern tree;
     private TMGame game;
     private int treeshowheight;

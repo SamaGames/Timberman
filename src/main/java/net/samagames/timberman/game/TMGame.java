@@ -77,7 +77,7 @@ public class TMGame extends Game<TMPlayer>
         startTime = System.currentTimeMillis();
         for (TMPlayer tmp : this.getInGamePlayers().values())
         {
-            if (tmp.isModerator() || tmp.isSpectator() || !tmp.isOnline())
+            if (!tmp.isOnline())
                 continue ;
             Player p = tmp.getPlayerIfOnline();
             givePlayingInventory(p);
@@ -96,7 +96,8 @@ public class TMGame extends Game<TMPlayer>
                 countdownTask.cancel();
                 return ;
             }
-            coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début dans " + ChatColor.RED + countdown + " seconde" + (countdown == 1 ? "" : "s") + ChatColor.YELLOW + ".", true);
+            else if (countdown == 10 || countdown < 9)
+                coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début dans " + ChatColor.RED + countdown + " seconde" + (countdown == 1 ? "" : "s") + ChatColor.YELLOW + ".", true);
             countdown--;
         }, 0, 20);
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
@@ -136,7 +137,7 @@ public class TMGame extends Game<TMPlayer>
         tmp.setSpectator();
         List<TMPlayer> players = new ArrayList<>();
         for (TMPlayer t : this.getInGamePlayers().values())
-            if (!(t == null || t.isModerator() || t.isSpectator() || !t.isOnline()))
+            if (!(t.isSpectator() || !t.isOnline()))
                 players.add(t);
         if (players.isEmpty())
             handleGameEnd();
