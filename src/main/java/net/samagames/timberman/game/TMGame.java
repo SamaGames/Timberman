@@ -83,7 +83,7 @@ public class TMGame extends Game<TMPlayer>
             givePlayingInventory(p);
             tmp.startGame(plugin, p);
         }
-        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::countdown, 0, 20);
+        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> this.countdown(), 0, 20);//Can't put this::countdown (Sonar)
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             time++;
             this.gamePlayers.forEach((uuid, player) -> player.updateScoreboard());
