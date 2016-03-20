@@ -200,7 +200,11 @@ public class TMPlayer extends GamePlayer {
         if (treeBlocks.containsKey(currentPosition)
                 && treeBlocks.get(currentPosition).containsKey(-1))
             right = treeBlocks.get(currentPosition).get(-1);
+        treeBreak2(plugin, p, left, right);
+    }
 
+    private void treeBreak2(Timberman plugin, Player p, Material left, Material right)
+    {
         if ((this.standleft.isVisible() && left != Material.AIR)
                 || (this.standright.isVisible() && right != Material.AIR)) {
             plugin.getGame().lose(this);
@@ -276,7 +280,7 @@ public class TMPlayer extends GamePlayer {
         @Override
         public int compare(TMPlayer first, TMPlayer second)
         {
-            if (first.getProgression() != second.getProgression())
+            if ((int)(first.getProgression() * 100) != (int)(second.getProgression() * 100))
                 return (int)((second.getProgression() - first.getProgression()) * 100);
             if (first.isSpectator() != second.isSpectator())
                 return first.isSpectator() ? -1 : 1;

@@ -83,27 +83,30 @@ public class TMGame extends Game<TMPlayer>
             givePlayingInventory(p);
             tmp.startGame(plugin, p);
         }
-        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            for (Player player : plugin.getServer().getOnlinePlayers())
-                if (countdown == 0)
-                    Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Coupez !");
-                else if (countdown == 10 || countdown < 6)
-                    Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + " secondes");
-            if (countdown == 0)
-            {
-                coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Coupez !", true);
-                countdown--;
-                countdownTask.cancel();
-                return ;
-            }
-            else if (countdown == 10 || countdown < 6)
-                coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début dans " + ChatColor.RED + countdown + " seconde" + (countdown == 1 ? "" : "s") + ChatColor.YELLOW + ".", true);
-            countdown--;
-        }, 0, 20);
+        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> this.countdown(), 0, 20);//Can't put this::countdown (Sonar)
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             time++;
             this.gamePlayers.forEach((uuid, player) -> player.updateScoreboard());
         }, 20, 20);
+    }
+
+    private void countdown()
+    {
+        for (Player player : plugin.getServer().getOnlinePlayers())
+            if (countdown == 0)
+                Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Coupez !");
+            else if (countdown == 10 || countdown < 6)
+                Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + " secondes");
+        if (countdown == 0)
+        {
+            coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Coupez !", true);
+            countdown--;
+            countdownTask.cancel();
+            return ;
+        }
+        else if (countdown == 10 || countdown < 9)
+            coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début dans " + ChatColor.RED + countdown + " seconde" + (countdown == 1 ? "" : "s") + ChatColor.YELLOW + ".", true);
+        countdown--;
     }
 
     @Override
