@@ -15,30 +15,24 @@ import org.bukkit.event.world.StructureGrowEvent;
 
 public class WorldListener implements Listener
 {
-	@EventHandler
-	public void onWeatherChange(WeatherChangeEvent ev)
-	{
-		if (ev.toWeatherState())
-			ev.setCancelled(true);
-	}
-	
-	@EventHandler
-	public void onEntitySpawn(EntitySpawnEvent ev)
-	{
-		switch (ev.getEntityType())
-		{
-		case ARMOR_STAND:
-		case PLAYER:
-			return ;
-		default:
-			ev.setCancelled(true);
-		}
-	}
-	
-	@Override
-    public int hashCode()
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent ev)
     {
-        return super.hashCode();
+        if (ev.toWeatherState())
+            ev.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent ev)
+    {
+        switch (ev.getEntityType())
+        {
+        case ARMOR_STAND:
+        case PLAYER:
+            return ;
+        default:
+            ev.setCancelled(true);
+        }
     }
 
     @EventHandler
