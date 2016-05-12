@@ -7,7 +7,7 @@ import java.util.Random;
 import org.bukkit.block.BlockFace;
 
 public class TreePattern {
-    private HashMap<Integer, BlockFace> branchs = new HashMap<Integer, BlockFace>();
+    private HashMap<Integer, BlockFace> branchs = new HashMap<>();
     private int height;
 
     public TreePattern(int height) {

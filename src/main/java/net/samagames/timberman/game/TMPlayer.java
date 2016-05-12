@@ -188,7 +188,7 @@ public class TMPlayer extends GamePlayer {
 
         showTree(plugin, p);
 
-        p.playSound(treeloc, Sound.DIG_WOOD, 1.0F, 1.0F);
+        p.playSound(treeloc, Sound.BLOCK_WOOD_BREAK, 1.0F, 1.0F);
         p.playEffect(treeloc, Effect.STEP_SOUND, Material.LOG);
 
         Material left = Material.AIR;
