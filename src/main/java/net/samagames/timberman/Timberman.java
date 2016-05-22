@@ -53,6 +53,7 @@ public class Timberman extends JavaPlugin
         game = new TMGame(this);
         api.getGameManager().registerGame(game);
         api.getGameManager().setMaxReconnectTime(-1);
+        api.getGameManager().setKeepPlayerCache(true);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
     }
