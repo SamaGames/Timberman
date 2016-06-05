@@ -15,6 +15,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerListener implements Listener {
@@ -74,6 +75,12 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent ev) {
+        ev.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onSecondHand(PlayerSwapHandItemsEvent ev)
+    {
         ev.setCancelled(true);
     }
 }
