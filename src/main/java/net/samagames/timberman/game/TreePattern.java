@@ -45,11 +45,11 @@ public class TreePattern {
         }
     }
 
-    public Map<Integer, BlockFace> getBranchs() {
+    Map<Integer, BlockFace> getBranchs() {
         return branchs;
     }
 
-    public int getHeight() {
+    int getHeight() {
         return height;
     }
 }
