@@ -4,6 +4,7 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.timberman.game.TMGame;
 import net.samagames.timberman.game.TreePattern;
 import net.samagames.timberman.listener.PlayerListener;
+import net.samagames.timberman.listener.WorldListener;
 import net.samagames.timberman.util.JsonUtils;
 
 import org.apache.commons.lang3.Validate;
@@ -56,6 +57,7 @@ public class Timberman extends JavaPlugin
         api.getGameManager().setKeepPlayerCache(true);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(), this);
     }
 
     public Location getSpawn()

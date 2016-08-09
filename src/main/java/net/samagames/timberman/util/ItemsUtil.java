@@ -16,7 +16,7 @@ public class ItemsUtil
     private ItemsUtil(){
     }
 
-    public static ItemStack setItemMeta(ItemStack item, String name, String[] lore)
+    private static ItemStack setItemMeta(ItemStack item, String name, String[] lore)
     {
         ItemMeta meta = item.getItemMeta();
         if (name != null)
@@ -36,7 +36,7 @@ public class ItemsUtil
         return item;
     }
 
-    public static ItemStack setItemMeta(Material material, int i, short j, String name, String[] lore)
+    private static ItemStack setItemMeta(Material material, int i, short j, String name, String[] lore)
     {
         ItemStack item = new ItemStack(material, i);
         item.setDurability(j);

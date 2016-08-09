@@ -47,6 +47,7 @@ public class PlayerListener implements Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent ev) {
         TMPlayer tmp = plugin.getGame().getPlayer(ev.getPlayer().getUniqueId());

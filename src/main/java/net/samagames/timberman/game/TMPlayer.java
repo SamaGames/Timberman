@@ -29,7 +29,6 @@ import org.bukkit.potion.PotionEffectType;
 
 public class TMPlayer extends GamePlayer {
     private HashMap<Integer, HashMap<Integer, Material>> treeBlocks;
-    private Location gameloc;
     private Location treeloc;
     private ArmorStand standleft;
     private ArmorStand standright;
@@ -46,8 +45,8 @@ public class TMPlayer extends GamePlayer {
         this.updateScoreboard();
     }
 
-    public void startGame(Timberman plugin, Player p) {
-        gameloc = plugin.newGameSpawn();
+    void startGame(Timberman plugin, Player p) {
+        Location gameloc = plugin.newGameSpawn();
         treeloc = plugin.newTreeSpawn();
         currentPosition = 0;
         toDown = 0;
@@ -157,7 +156,7 @@ public class TMPlayer extends GamePlayer {
     }
 
     @SuppressWarnings("deprecation")
-    public void showTree(Timberman plugin, Player p) {
+    private void showTree(Timberman plugin, Player p) {
         int startpos = currentPosition;
         int maxshow = plugin.getTreeShowHeight();
 
@@ -238,24 +237,24 @@ public class TMPlayer extends GamePlayer {
                 .style(ChatColor.BOLD).send(bukkitPlayer);
     }
 
-    public float getProgression() {
+    private float getProgression() {
         return (float) currentPosition / (float) toDown;
     }
 
-    public String getDisplayName() {
+    String getDisplayName() {
         Player p = getPlayerIfOnline();
         if (p == null)
             return getOfflinePlayer().getName();
         return p.getDisplayName();
     }
 
-    public void updateScoreboard()
+    void updateScoreboard()
     {
         List<TMPlayer> players = new ArrayList<>();
         players.addAll(this.game.getInGamePlayers().values());
         players.addAll(this.game.getSpectatorPlayers().values().stream().filter(player -> !player.isModerator()).collect(Collectors.toList()));
         this.objective.setLine(1, " ");
-        this.objective.setLine(2, ChatColor.WHITE + " Joueurs : " + ChatColor.GRAY + players.size());
+        this.objective.setLine(2, ChatColor.WHITE + (players.size() > 1 ? " Joueurs : " : " Joueur : ") + ChatColor.GRAY + players.size());
         if (game.getStatus() == Status.IN_GAME || game.getStatus() == Status.FINISHED)
         {
             this.objective.setLine(3, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime() + "s");

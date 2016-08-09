@@ -1,7 +1,7 @@
 package net.samagames.timberman.game;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
@@ -47,7 +47,7 @@ public class TMGame extends Game<TMPlayer>
         giveWaitingInventory(p);
     }
 
-    public void giveWaitingInventory(Player p)
+    private void giveWaitingInventory(Player p)
     {
         if (p == null)
             return ;
@@ -56,7 +56,7 @@ public class TMGame extends Game<TMPlayer>
         inv.setItem(4, RulesUtil.getRulesBook());
     }
 
-    public void givePlayingInventory(Player p)
+    private void givePlayingInventory(Player p)
     {
         if (p == null)
             return ;
@@ -83,7 +83,7 @@ public class TMGame extends Game<TMPlayer>
             givePlayingInventory(p);
             tmp.startGame(plugin, p);
         }
-        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> this.countdown(), 0, 20);//Can't put this::countdown (Sonar)
+        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::countdown, 0, 20);
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             time++;
             this.gamePlayers.forEach((uuid, player) -> player.updateScoreboard());
@@ -96,7 +96,7 @@ public class TMGame extends Game<TMPlayer>
             if (countdown == 0)
                 Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Coupez !");
             else if (countdown == 10 || countdown < 6)
-                Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + " secondes");
+                Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + (countdown == 1 ? " seconde" : " secondes"));
         if (countdown == 0)
         {
             coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Coupez !", true);
@@ -118,7 +118,7 @@ public class TMGame extends Game<TMPlayer>
             lose(tmp);
     }
 
-    public void win(TMPlayer tmp)
+    void win(TMPlayer tmp)
     {
         if (tmp == null || !tmp.isOnline())
             return ;
@@ -132,16 +132,13 @@ public class TMGame extends Game<TMPlayer>
         this.handleGameEnd();
     }
 
-    public void lose(TMPlayer tmp)
+    void lose(TMPlayer tmp)
     {
         if (tmp == null || tmp.isSpectator())
             return ;
         plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + " " + tmp.getDisplayName() + ChatColor.WHITE + " est éliminé !");
         tmp.setSpectator();
-        List<TMPlayer> players = new ArrayList<>();
-        for (TMPlayer t : this.getInGamePlayers().values())
-            if (!(t.isSpectator() || !t.isOnline()))
-                players.add(t);
+        List<TMPlayer> players = this.getInGamePlayers().values().stream().filter(t -> !(t.isSpectator() || !t.isOnline())).collect(Collectors.toList());
         if (players.isEmpty())
             handleGameEnd();
         else if (players.size() == 1)
@@ -153,7 +150,7 @@ public class TMGame extends Game<TMPlayer>
         return countdown == -1;
     }
 
-    public int getTime()
+    int getTime()
     {
         return time;
     }
