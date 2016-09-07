@@ -18,64 +18,74 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PlayerListener implements Listener {
+public class PlayerListener implements Listener
+{
     private Timberman plugin;
 
-    public PlayerListener(Timberman main) {
-        plugin = main;
+    public PlayerListener(Timberman main)
+    {
+        this.plugin = main;
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent ev) {
-        if (plugin.getGame().getStatus() == Status.IN_GAME) {
-            TMPlayer tmp = plugin.getGame().getPlayer(
-                    ev.getPlayer().getUniqueId());
+    public void onPlayerMove(PlayerMoveEvent ev)
+    {
+        if (this.plugin.getGame().getStatus() == Status.IN_GAME)
+        {
+            TMPlayer tmp = this.plugin.getGame().getPlayer(ev.getPlayer().getUniqueId());
 
             if (tmp == null)
-                return;
+                return ;
+
             Block b = ev.getTo().clone().subtract(0, 1, 0).getBlock();
 
-            if (b.hasMetadata("pos")) {
+            if (b.hasMetadata("pos"))
+            {
                 double x = ev.getFrom().getX() - ev.getTo().getX();
 
-                if (x > 0) {
+                if (x > 0)
                     tmp.moveRight();
-                } else if (x < 0) {
+                else if (x < 0)
                     tmp.moveLeft();
-                }
             }
         }
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent ev) {
+    public void onPlayerInteract(PlayerInteractEvent ev)
+    {
         TMPlayer tmp = plugin.getGame().getPlayer(ev.getPlayer().getUniqueId());
 
         Player p = ev.getPlayer();
         ItemStack i = p.getItemInHand();
+
         if (i == null)
-            return;
+            return ;
+
         ev.setCancelled(!i.getType().equals(Material.WRITTEN_BOOK));
 
         if (i.getType() == ItemsUtil.AXE.getType() && tmp != null
-                && plugin.getGame().getStatus() == Status.IN_GAME
-                && plugin.getGame().isStarted())
-            tmp.treeBreak(plugin, p);
+                && this.plugin.getGame().getStatus() == Status.IN_GAME
+                && this.plugin.getGame().isStarted())
+            tmp.treeBreak(this.plugin, p);
     }
 
     @EventHandler
-    public void onPlayerDropItem(PlayerDropItemEvent ev) {
+    public void onPlayerDropItem(PlayerDropItemEvent ev)
+    {
         ev.setCancelled(true);
     }
 
     @EventHandler
-    public void onFoodLevelChanged(FoodLevelChangeEvent ev) {
+    public void onFoodLevelChanged(FoodLevelChangeEvent ev)
+    {
         ev.setCancelled(true);
     }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent ev) {
+    public void onDamage(EntityDamageEvent ev)
+    {
         ev.setCancelled(true);
     }
 

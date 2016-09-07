@@ -12,7 +12,6 @@ import net.samagames.timberman.util.RulesUtil;
 import net.samagames.tools.chat.fanciful.FancyMessage;
 
 import net.samagames.tools.scoreboards.ObjectiveSign;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
@@ -27,17 +26,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffectType;
 
-public class TMPlayer extends GamePlayer {
-    private HashMap<Integer, HashMap<Integer, Material>> treeBlocks;
-    private Location treeloc;
-    private ArmorStand standleft;
-    private ArmorStand standright;
+public class TMPlayer extends GamePlayer
+{
+    private Map<Integer, Map<Integer, Material>> treeBlocks;
+    private Location treeLocation;
+    private ArmorStand standLeft;
+    private ArmorStand standRight;
     private int currentPosition;
     private int toDown;
     private ObjectiveSign objective;
     private TMGame game;
 
-    public TMPlayer(Player player) {
+    public TMPlayer(Player player)
+    {
         super(player);
         this.objective = new ObjectiveSign("timberman", ChatColor.GOLD + "Timberman");
         this.objective.addReceiver(this.getOfflinePlayer());
@@ -45,203 +46,199 @@ public class TMPlayer extends GamePlayer {
         this.updateScoreboard();
     }
 
-    void startGame(Timberman plugin, Player p) {
-        Location gameloc = plugin.newGameSpawn();
-        treeloc = plugin.newTreeSpawn();
-        currentPosition = 0;
-        toDown = 0;
-        treeBlocks = new HashMap<>();
+    void startGame(Timberman plugin, Player p)
+    {
+        Location gameLocation = plugin.newGameSpawn();
+        this.treeLocation = plugin.newTreeSpawn();
+        this.currentPosition = 0;
+        this.toDown = 0;
+        this.treeBlocks = new HashMap<>();
 
         TreePattern tree = plugin.getTreePattern();
-        for (int i = 0; i < tree.getHeight(); i++) {
-
-            HashMap<Integer, Material> blocks = new HashMap<>();
+        for (int i = 0; i < tree.getHeight(); i++)
+        {
+            Map<Integer, Material> blocks = new HashMap<>();
 
             blocks.put(0, Material.LOG);
 
-            BlockFace bF = tree.getBranchs().get(i);
+            BlockFace bF = tree.getBranches().get(i);
 
-            if (bF == BlockFace.EAST) {
+            if (bF == BlockFace.EAST)
+            {
                 blocks.put(1, Material.LOG);
                 blocks.put(-1, Material.AIR);
-            } else if (bF == BlockFace.WEST) {
+            }
+            else if (bF == BlockFace.WEST)
+            {
                 blocks.put(1, Material.AIR);
                 blocks.put(-1, Material.LOG);
-            } else {
+            }
+            else
+            {
                 blocks.put(-1, Material.AIR);
                 blocks.put(1, Material.AIR);
             }
 
-            treeBlocks.put(toDown, blocks);
+            this.treeBlocks.put(this.toDown, blocks);
 
-            toDown++;
+            this.toDown++;
         }
 
-        Location left = treeloc.clone().add(1.3, 0, 0);
+        Location left = this.treeLocation.clone().add(1.3, 0, 0);
         left.setYaw(90);
-        this.standleft = (ArmorStand) treeloc.getWorld().spawnEntity(left,
-                EntityType.ARMOR_STAND);
-        this.standleft.setArms(true);
-        this.standleft.setBasePlate(false);
-        this.standleft.setCanPickupItems(false);
-        this.standleft.setGravity(false);
-        this.standleft.setVisible(false);
-        this.standleft.setRemoveWhenFarAway(false);
+        this.standLeft = (ArmorStand) this.treeLocation.getWorld().spawnEntity(left, EntityType.ARMOR_STAND);
+        this.standLeft.setArms(true);
+        this.standLeft.setBasePlate(false);
+        this.standLeft.setCanPickupItems(false);
+        this.standLeft.setGravity(false);
+        this.standLeft.setVisible(false);
+        this.standLeft.setRemoveWhenFarAway(false);
 
-        Location right = treeloc.clone().add(-1.3, 0, 0);
+        Location right = this.treeLocation.clone().add(-1.3, 0, 0);
         right.setYaw(-90);
-        this.standright = (ArmorStand) treeloc.getWorld().spawnEntity(right,
-                EntityType.ARMOR_STAND);
-        this.standright.setArms(true);
-        this.standright.setBasePlate(false);
-        this.standright.setCanPickupItems(false);
-        this.standright.setGravity(false);
-        this.standright.setVisible(false);
-        this.standright.setRemoveWhenFarAway(false);
+        this.standRight = (ArmorStand) treeLocation.getWorld().spawnEntity(right, EntityType.ARMOR_STAND);
+        this.standRight.setArms(true);
+        this.standRight.setBasePlate(false);
+        this.standRight.setCanPickupItems(false);
+        this.standRight.setGravity(false);
+        this.standRight.setVisible(false);
+        this.standRight.setRemoveWhenFarAway(false);
 
         moveLeft();
 
-        gameloc.clone()
-                .add(0, -1, 0)
-                .getBlock()
-                .setMetadata("pos",
-                        new FixedMetadataValue(plugin, "Rigner is god"));
+        gameLocation.clone().add(0, -1, 0).getBlock().setMetadata("pos", new FixedMetadataValue(plugin, "Rigner is god"));
 
-        p.teleport(gameloc);
-        p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE,
-                128));
+        p.teleport(gameLocation);
+        p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE, 128));
         showTree(plugin, p);
     }
 
-    public void moveLeft() {
-        if (!this.standleft.isVisible()) {
-            this.standright.setHelmet(new ItemStack(Material.AIR));
-            this.standright.setChestplate(new ItemStack(Material.AIR));
-            this.standright.setLeggings(new ItemStack(Material.AIR));
-            this.standright.setBoots(new ItemStack(Material.AIR));
-            this.standright.setItemInHand(new ItemStack(Material.AIR));
-            this.standright.setVisible(false);
+    public void moveLeft()
+    {
+        if (!this.standLeft.isVisible())
+        {
+            this.standRight.setHelmet(new ItemStack(Material.AIR));
+            this.standRight.setChestplate(new ItemStack(Material.AIR));
+            this.standRight.setLeggings(new ItemStack(Material.AIR));
+            this.standRight.setBoots(new ItemStack(Material.AIR));
+            this.standRight.setItemInHand(new ItemStack(Material.AIR));
+            this.standRight.setVisible(false);
 
-            this.standleft.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
-            this.standleft.setVisible(true);
-            this.standleft.setHelmet(ItemsUtil.createHead(this
-                    .getOfflinePlayer().getName()));
-            this.standleft.setChestplate(new ItemStack(
-                    Material.LEATHER_CHESTPLATE));
-            this.standleft
-                    .setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-            this.standleft.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+            this.standLeft.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
+            this.standLeft.setVisible(true);
+            this.standLeft.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
+            this.standLeft.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+            this.standLeft.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+            this.standLeft.setBoots(new ItemStack(Material.LEATHER_BOOTS));
         }
     }
 
-    public void moveRight() {
-        if (!this.standright.isVisible()) {
-            this.standleft.setHelmet(new ItemStack(Material.AIR));
-            this.standleft.setChestplate(new ItemStack(Material.AIR));
-            this.standleft.setLeggings(new ItemStack(Material.AIR));
-            this.standleft.setBoots(new ItemStack(Material.AIR));
-            this.standleft.setItemInHand(new ItemStack(Material.AIR));
-            this.standleft.setVisible(false);
+    public void moveRight()
+    {
+        if (!this.standRight.isVisible())
+        {
+            this.standLeft.setHelmet(new ItemStack(Material.AIR));
+            this.standLeft.setChestplate(new ItemStack(Material.AIR));
+            this.standLeft.setLeggings(new ItemStack(Material.AIR));
+            this.standLeft.setBoots(new ItemStack(Material.AIR));
+            this.standLeft.setItemInHand(new ItemStack(Material.AIR));
+            this.standLeft.setVisible(false);
 
-            this.standright.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
-            this.standright.setVisible(true);
-            this.standright.setHelmet(ItemsUtil.createHead(this
-                    .getOfflinePlayer().getName()));
-            this.standright.setChestplate(new ItemStack(
-                    Material.LEATHER_CHESTPLATE));
-            this.standright
-                    .setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-            this.standright.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+            this.standRight.setItemInHand(new ItemStack(Material.DIAMOND_AXE));
+            this.standRight.setVisible(true);
+            this.standRight.setHelmet(ItemsUtil.createHead(this.getOfflinePlayer().getName()));
+            this.standRight.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+            this.standRight.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+            this.standRight.setBoots(new ItemStack(Material.LEATHER_BOOTS));
         }
     }
 
     @SuppressWarnings("deprecation")
-    private void showTree(Timberman plugin, Player p) {
-        int startpos = currentPosition;
-        int maxshow = plugin.getTreeShowHeight();
+    private void showTree(Timberman plugin, Player p)
+    {
+        int startPosition = currentPosition;
+        int maxShow = plugin.getTreeShowHeight();
 
-        for (int i = 0; i <= maxshow; i++) {
-            HashMap<Integer, Material> blocs = new HashMap<>();
+        for (int i = 0; i <= maxShow; i++)
+        {
+            Map<Integer, Material> blocs = new HashMap<>();
 
-            if (treeBlocks.containsKey(startpos + i)) {
-                blocs = treeBlocks.get(startpos + i);
-            } else {
+            if (this.treeBlocks.containsKey(startPosition + i))
+                blocs = this.treeBlocks.get(startPosition + i);
+            else
+            {
                 blocs.put(-1, Material.AIR);
                 blocs.put(0, Material.AIR);
                 blocs.put(1, Material.AIR);
             }
 
-            for (Entry<Integer, Material> entry : blocs.entrySet()) {
-                p.sendBlockChange(
-                        this.treeloc.clone().add(entry.getKey(),
-                                (double) i + 1, 0), entry.getValue(), (byte) 0);
-            }
+            for (Entry<Integer, Material> entry : blocs.entrySet())
+                p.sendBlockChange(this.treeLocation.clone().add(entry.getKey(), (double) i + 1, 0), entry.getValue(), (byte) 0);
         }
 
     }
 
-    public void treeBreak(Timberman plugin, Player p) {
+    public void treeBreak(Timberman plugin, Player p)
+    {
         if (this.spectator)
             return ;
-        currentPosition++;
+        this.currentPosition++;
 
         showTree(plugin, p);
 
-        p.playSound(treeloc, Sound.BLOCK_WOOD_BREAK, 1.0F, 1.0F);
-        p.playEffect(treeloc, Effect.STEP_SOUND, Material.LOG);
+        p.playSound(this.treeLocation, Sound.BLOCK_WOOD_BREAK, 1.0F, 1.0F);
+        p.playEffect(this.treeLocation, Effect.STEP_SOUND, Material.LOG);
 
         Material left = Material.AIR;
-        if (treeBlocks.containsKey(currentPosition)
-                && treeBlocks.get(currentPosition).containsKey(1))
-            left = treeBlocks.get(currentPosition).get(1);
+        if (this.treeBlocks.containsKey(this.currentPosition) && this.treeBlocks.get(this.currentPosition).containsKey(1))
+            left = this.treeBlocks.get(this.currentPosition).get(1);
 
         Material right = Material.AIR;
-        if (treeBlocks.containsKey(currentPosition)
-                && treeBlocks.get(currentPosition).containsKey(-1))
-            right = treeBlocks.get(currentPosition).get(-1);
+        if (this.treeBlocks.containsKey(this.currentPosition) && this.treeBlocks.get(this.currentPosition).containsKey(-1))
+            right = this.treeBlocks.get(this.currentPosition).get(-1);
         treeBreak2(plugin, p, left, right);
     }
 
     private void treeBreak2(Timberman plugin, Player p, Material left, Material right)
     {
-        if ((this.standleft.isVisible() && left != Material.AIR)
-                || (this.standright.isVisible() && right != Material.AIR)) {
+        if ((this.standLeft.isVisible() && left != Material.AIR) || (this.standRight.isVisible() && right != Material.AIR))
             plugin.getGame().lose(this);
-        } else {
-            p.setExp((float) currentPosition / (float) toDown);
+        else
+        {
+            p.setExp((float) this.currentPosition / (float) this.toDown);
 
-            if (currentPosition >= toDown) {
+            if (this.currentPosition >= this.toDown)
                 plugin.getGame().win(this);
-            }
         }
     }
 
     @Override
-    public void setSpectator() {
+    public void setSpectator()
+    {
         this.spectator = true;
         Player bukkitPlayer = this.getPlayerIfOnline();
         if (bukkitPlayer == null)
-            return;
+            return ;
+
         bukkitPlayer.getInventory().clear();
         bukkitPlayer.getInventory().setItem(4, RulesUtil.getRulesBook());
         bukkitPlayer.setGameMode(GameMode.ADVENTURE);
         bukkitPlayer.setAllowFlight(true);
         bukkitPlayer.setFlying(true);
         bukkitPlayer.removePotionEffect(PotionEffectType.JUMP);
-        for (Player player : Bukkit.getOnlinePlayers())
-            player.hidePlayer(bukkitPlayer);
-        new FancyMessage("Cliquez ").color(ChatColor.YELLOW)
-                .style(ChatColor.BOLD).then("[ICI]").command("/hub")
-                .color(ChatColor.AQUA).style(ChatColor.BOLD)
-                .then(" pour retourner au hub !").color(ChatColor.YELLOW)
-                .style(ChatColor.BOLD).send(bukkitPlayer);
+
+        for (TMPlayer player : this.game.getInGamePlayers().values())
+            player.getPlayerIfOnline().hidePlayer(bukkitPlayer);
+        new FancyMessage("Cliquez ").color(ChatColor.YELLOW).style(ChatColor.BOLD).then("[ICI]").command("/hub").color(ChatColor.AQUA).style(ChatColor.BOLD).then(" pour retourner au hub !").color(ChatColor.YELLOW).style(ChatColor.BOLD).send(bukkitPlayer);
     }
 
-    private float getProgression() {
-        return (float) currentPosition / (float) toDown;
+    private float getProgression()
+    {
+        return (float) this.currentPosition / (float) this.toDown;
     }
 
-    String getDisplayName() {
+    String getDisplayName()
+    {
         Player p = getPlayerIfOnline();
         if (p == null)
             return getOfflinePlayer().getName();
@@ -255,9 +252,10 @@ public class TMPlayer extends GamePlayer {
         players.addAll(this.game.getSpectatorPlayers().values().stream().filter(player -> !player.isModerator()).collect(Collectors.toList()));
         this.objective.setLine(1, " ");
         this.objective.setLine(2, ChatColor.WHITE + (players.size() > 1 ? " Joueurs : " : " Joueur : ") + ChatColor.GRAY + players.size());
-        if (game.getStatus() == Status.IN_GAME || game.getStatus() == Status.FINISHED)
+
+        if (this.game.getStatus() == Status.IN_GAME || this.game.getStatus() == Status.FINISHED)
         {
-            this.objective.setLine(3, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + game.getTime() + "s");
+            this.objective.setLine(3, ChatColor.WHITE + " Temps : " + ChatColor.GRAY + this.game.getTime() + "s");
             this.objective.setLine(4, "  ");
             this.objective.setLine(5, ChatColor.WHITE + " Progression (%) :");
             int i = 6;

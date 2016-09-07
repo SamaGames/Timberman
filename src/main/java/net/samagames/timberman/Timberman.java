@@ -18,23 +18,23 @@ import java.util.List;
 
 public class Timberman extends JavaPlugin
 {
-    public static final String NAME_BICOLOR = ChatColor.GOLD + "" + ChatColor.BOLD + "Timberman";
+    public static final String NAME_BI_COLOR = ChatColor.GOLD + "" + ChatColor.BOLD + "Timberman";
 
     private Location spawn;
-    private List<Location> gamespawn;
-    private List<Location> treespawn;
-    private int[] spawnindex = {0, 0};
+    private List<Location> gameSpawn;
+    private List<Location> treeSpawn;
+    private int[] spawnIndex = {0, 0};
     private TreePattern tree;
     private TMGame game;
-    private int treeshowheight;
+    private int treeShowHeight;
 
     @Override
     public void onEnable()
     {
         SamaGamesAPI api = SamaGamesAPI.get();
-        spawn = JsonUtils.getLocation(api.getGameManager().getGameProperties().getConfig("spawn", null));
-        gamespawn = new ArrayList<>();
-        treespawn = new ArrayList<>();
+        this.spawn = JsonUtils.getLocation(api.getGameManager().getGameProperties().getConfig("spawn", null));
+        this.gameSpawn = new ArrayList<>();
+        this.treeSpawn = new ArrayList<>();
         int i = 0;
         while (true)
         {
@@ -43,16 +43,16 @@ public class Timberman extends JavaPlugin
             if (tmp == null || tmp2 == null)
                 break ;
             tmp2.getBlock().setType(Material.LOG);
-            gamespawn.add(tmp);
-            treespawn.add(tmp2);
+            this.gameSpawn.add(tmp);
+            this.treeSpawn.add(tmp2);
             i++;
         }
-        tree = new TreePattern(api.getGameManager().getGameProperties().getConfig("height", null).getAsInt());
-        treeshowheight = api.getGameManager().getGameProperties().getConfig("showheight", null).getAsInt();
+        this.tree = new TreePattern(api.getGameManager().getGameProperties().getConfig("height", null).getAsInt());
+        this.treeShowHeight = api.getGameManager().getGameProperties().getConfig("showheight", null).getAsInt();
         Validate.notNull(spawn);
 
-        game = new TMGame(this);
-        api.getGameManager().registerGame(game);
+        this.game = new TMGame(this);
+        api.getGameManager().registerGame(this.game);
         api.getGameManager().setMaxReconnectTime(-1);
         api.getGameManager().setKeepPlayerCache(true);
 
@@ -62,35 +62,35 @@ public class Timberman extends JavaPlugin
 
     public Location getSpawn()
     {
-        return spawn;
+        return this.spawn;
     }
 
     public Location newGameSpawn()
     {
-        Location loc = gamespawn.get(spawnindex[0]);
-        spawnindex[0]++;
+        Location loc = this.gameSpawn.get(this.spawnIndex[0]);
+        this.spawnIndex[0]++;
         return loc;
     }
 
     public Location newTreeSpawn()
     {
-        Location loc = treespawn.get(spawnindex[1]);
-        spawnindex[1]++;
+        Location loc = this.treeSpawn.get(this.spawnIndex[1]);
+        this.spawnIndex[1]++;
         return loc;
     }
 
     public TreePattern getTreePattern()
     {
-        return tree;
+        return this.tree;
     }
 
     public TMGame getGame()
     {
-        return game;
+        return this.game;
     }
 
     public int getTreeShowHeight()
     {
-        return treeshowheight;
+        return this.treeShowHeight;
     }
 }

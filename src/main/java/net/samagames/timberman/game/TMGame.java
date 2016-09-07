@@ -26,7 +26,7 @@ public class TMGame extends Game<TMPlayer>
     public TMGame(Timberman main)
     {
         super("timberman", "TimberMan", "", TMPlayer.class);
-        plugin = main;
+        this.plugin = main;
         this.countdown = 10;
         this.time = 0;
     }
@@ -35,7 +35,7 @@ public class TMGame extends Game<TMPlayer>
     public void handleLogin(Player p)
     {
         super.handleLogin(p);
-        p.teleport(plugin.getSpawn());
+        p.teleport(this.plugin.getSpawn());
         p.setGameMode(GameMode.ADVENTURE);
         p.setAllowFlight(false);
         p.setCanPickupItems(false);
@@ -74,39 +74,40 @@ public class TMGame extends Game<TMPlayer>
         if (this.isGameStarted() || this.isStarted())
             return ;
         super.startGame();
-        startTime = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
         for (TMPlayer tmp : this.getInGamePlayers().values())
         {
             if (!tmp.isOnline())
                 continue ;
             Player p = tmp.getPlayerIfOnline();
             givePlayingInventory(p);
-            tmp.startGame(plugin, p);
+            tmp.startGame(this.plugin, p);
         }
-        this.countdownTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::countdown, 0, 20);
-        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            time++;
+        this.countdownTask = this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, this::countdown, 0, 20);
+        this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, () ->
+        {
+            this.time++;
             this.gamePlayers.forEach((uuid, player) -> player.updateScoreboard());
         }, 20, 20);
     }
 
     private void countdown()
     {
-        for (Player player : plugin.getServer().getOnlinePlayers())
-            if (countdown == 0)
+        for (Player player : this.plugin.getServer().getOnlinePlayers())
+            if (this.countdown == 0)
                 Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Coupez !");
-            else if (countdown == 10 || countdown < 6)
-                Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + countdown + (countdown == 1 ? " seconde" : " secondes"));
-        if (countdown == 0)
+            else if (this.countdown == 10 || this.countdown < 6)
+                Titles.sendTitle(player, 0, 20, 0, "", ChatColor.GOLD + "Début dans " + this.countdown + (this.countdown == 1 ? " seconde" : " secondes"));
+        if (this.countdown == 0)
         {
-            coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Coupez !", true);
-            countdown--;
-            countdownTask.cancel();
+            this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Coupez !", true);
+            this.countdown--;
+            this.countdownTask.cancel();
             return ;
         }
-        else if (countdown == 10 || countdown < 9)
-            coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début dans " + ChatColor.RED + countdown + " seconde" + (countdown == 1 ? "" : "s") + ChatColor.YELLOW + ".", true);
-        countdown--;
+        else if (this.countdown == 10 || this.countdown < 9)
+            this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Début dans " + ChatColor.RED + this.countdown + " seconde" + (this.countdown == 1 ? "" : "s") + ChatColor.YELLOW + ".", true);
+        this.countdown--;
     }
 
     @Override
@@ -114,7 +115,7 @@ public class TMGame extends Game<TMPlayer>
     {
         TMPlayer tmp = getPlayer(p.getUniqueId());
         super.handleLogout(p);
-        if (status == Status.IN_GAME)
+        if (this.status == Status.IN_GAME)
             lose(tmp);
     }
 
@@ -123,10 +124,10 @@ public class TMGame extends Game<TMPlayer>
         if (tmp == null || !tmp.isOnline())
             return ;
         String name = tmp.getDisplayName();
-        plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + " " + name + ChatColor.WHITE + " a gagné !");
-        for (Player user : plugin.getServer().getOnlinePlayers())
+        this.plugin.getServer().broadcastMessage(this.coherenceMachine.getGameTag() + " " + name + ChatColor.WHITE + " a gagné !");
+        for (Player user : this.plugin.getServer().getOnlinePlayers())
             Titles.sendTitle(user, 0, 60, 5, ChatColor.RED + "Fin du jeu", ChatColor.YELLOW + "Victoire de " + name);
-        coherenceMachine.getTemplateManager().getPlayerWinTemplate().execute(tmp.getPlayerIfOnline());
+        this.coherenceMachine.getTemplateManager().getPlayerWinTemplate().execute(tmp.getPlayerIfOnline());
         tmp.addCoins(30, "Victoire !");
         tmp.addStars(1, "Victoire !");
         this.handleGameEnd();
@@ -136,7 +137,7 @@ public class TMGame extends Game<TMPlayer>
     {
         if (tmp == null || tmp.isSpectator())
             return ;
-        plugin.getServer().broadcastMessage(coherenceMachine.getGameTag() + " " + tmp.getDisplayName() + ChatColor.WHITE + " est éliminé !");
+        this.plugin.getServer().broadcastMessage(this.coherenceMachine.getGameTag() + " " + tmp.getDisplayName() + ChatColor.WHITE + " est éliminé !");
         tmp.setSpectator();
         List<TMPlayer> players = this.getInGamePlayers().values().stream().filter(t -> !(t.isSpectator() || !t.isOnline())).collect(Collectors.toList());
         if (players.isEmpty())
@@ -147,11 +148,11 @@ public class TMGame extends Game<TMPlayer>
 
     public boolean isStarted()
     {
-        return countdown == -1;
+        return this.countdown == -1;
     }
 
     int getTime()
     {
-        return time;
+        return this.time;
     }
 }

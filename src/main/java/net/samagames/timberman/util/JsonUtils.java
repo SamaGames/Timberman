@@ -9,7 +9,8 @@ import com.google.gson.JsonObject;
 
 public class JsonUtils
 {
-    private JsonUtils(){
+    private JsonUtils()
+    {
     }
 
     public static Location getLocation(JsonElement object)
