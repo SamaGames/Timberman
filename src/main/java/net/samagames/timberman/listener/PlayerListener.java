@@ -34,7 +34,7 @@ public class PlayerListener implements Listener
         {
             TMPlayer tmp = this.plugin.getGame().getPlayer(ev.getPlayer().getUniqueId());
 
-            if (tmp == null)
+            if (tmp == null || tmp.isSpectator())
                 return ;
 
             Block b = ev.getTo().clone().subtract(0, 1, 0).getBlock();
